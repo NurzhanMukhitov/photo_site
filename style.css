@@ -96,7 +96,7 @@ body {
 .strip-track {
   display: flex;
   align-items: flex-end;
-  gap: 12px;
+  gap: 16px;
   /* animation: scroll-strip 18s linear infinite; */
 }
 .strip-track img {
@@ -153,6 +153,45 @@ body {
   .header, .intro { padding-left: 16px; padding-right: 16px; }
   .strip-track img { height: 160px; }
   .intro-text { font-size: 1rem; }
+}
+
+@media (max-width: 1200px) and (orientation: landscape) {
+  .intro,
+  .header,
+  .menu-mobile {
+    display: none !important;
+  }
+  .photo-strip {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    margin: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: transparent !important;
+    z-index: 1 !important;
+    padding: 0 !important;
+    transform: none !important;
+  }
+  .strip-track {
+    display: flex !important;
+    align-items: center !important;
+    height: 100vh !important;
+    width: 100vw !important;
+    margin: 0 !important;
+    gap: 16px !important;
+  }
+  .strip-track img {
+    height: 100vh !important;
+    width: auto !important;
+    object-fit: contain !important;
+    max-width: none !important;
+    aspect-ratio: auto !important;
+    margin: 0 !important;
+  }
 }
 
 @media (max-width: 600px) {
@@ -288,6 +327,86 @@ body {
   }
 }
 
+@media (min-width: 1024px) and (max-width: 1366px) and (orientation: landscape) {
+  .photo-strip {
+    position: static !important;
+    width: 100vw !important;
+    margin: 0 auto !important;
+    height: 600px !important;
+    display: block !important;
+    background: transparent !important;
+    padding: 0 !important;
+    border-top: none;
+    box-shadow: none;
+  }
+  .strip-track {
+    display: flex !important;
+    align-items: flex-end !important;
+    justify-content: center !important;
+    width: 100vw !important;
+    height: 100% !important;
+    gap: 8px !important;
+    margin: 0 !important;
+  }
+  .strip-track img {
+    height: 100% !important;
+    width: auto !important;
+    object-fit: contain !important;
+    max-width: 100% !important;
+    aspect-ratio: auto !important;
+    margin: 0 !important;
+  }
+}
+
+@media (min-width: 600px) and (max-width: 1023px) and (orientation: landscape) {
+  .intro,
+  .header,
+  .menu-mobile {
+    display: none !important;
+  }
+  .photo-strip {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    margin: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: transparent !important;
+    z-index: 1 !important;
+    padding: 0 !important;
+    transform: none !important;
+  }
+  .strip-track {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    gap: 16px !important;
+    margin: 0 !important;
+  }
+  .strip-track img {
+    height: 100vh !important;
+    width: auto !important;
+    object-fit: contain !important;
+    max-width: none !important;
+    aspect-ratio: auto !important;
+    margin: 0 !important;
+  }
+}
+
+@media (min-width: 1024px) and (max-width: 1199px) and (orientation: landscape) {
+  .photo-strip {
+    height: 100vh !important;
+  }
+  .strip-track {
+    height: 100vh !important;
+  }
+}
+
 /* Бургер-меню */
 .burger {
   display: none;
@@ -362,4 +481,15 @@ body {
   z-index: 101;
   padding: 0;
   line-height: 1;
-} 
+}
+
+/*
+@media (min-width: 1024px) and (max-width: 1199px) and (orientation: landscape) {
+  .photo-strip {
+    height: 100vh !important;
+  }
+  .strip-track {
+    height: 100vh !important;
+  }
+}
+*/ 
