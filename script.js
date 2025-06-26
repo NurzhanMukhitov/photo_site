@@ -20,21 +20,6 @@ function animate() {
   animationId = requestAnimationFrame(animate);
 }
 
-function stopAnimation() {
-  cancelAnimationFrame(animationId);
-  isRunning = false;
-}
-
-images.forEach(img => {
-  img.addEventListener('click', () => {
-    if (isRunning) {
-      stopAnimation();
-    } else {
-      animate();
-    }
-  });
-});
-
 // Бургер-меню
 const burger = document.getElementById('burger-menu');
 const mobileMenu = document.getElementById('mobile-menu');
@@ -57,4 +42,31 @@ if (closeMenuBtn && mobileMenu) {
   });
 }
 
-animate(); 
+animate();
+
+// --- Модальное окно для просмотра фото ---
+const photoModal = document.getElementById('photo-modal');
+const photoModalImg = document.getElementById('photo-modal-img');
+const photoModalClose = document.getElementById('photo-modal-close');
+
+// Открытие модального окна по клику на фото
+const stripImages = document.querySelectorAll('.strip-track img');
+stripImages.forEach(img => {
+  img.addEventListener('click', (e) => {
+    photoModalImg.src = img.src;
+    photoModal.classList.add('active');
+  });
+});
+
+// Закрытие по крестику
+photoModalClose.addEventListener('click', () => {
+  photoModal.classList.remove('active');
+  photoModalImg.src = '';
+});
+// Закрытие по клику вне фото
+photoModal.addEventListener('click', (e) => {
+  if (e.target === photoModal) {
+    photoModal.classList.remove('active');
+    photoModalImg.src = '';
+  }
+}); 

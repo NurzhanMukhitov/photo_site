@@ -483,6 +483,45 @@ body {
   line-height: 1;
 }
 
+/* Модальное окно для просмотра фото */
+.photo-modal {
+  display: none;
+  position: fixed;
+  z-index: 9999;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0,0,0,0.92);
+  justify-content: center;
+  align-items: center;
+  transition: opacity 0.2s;
+}
+.photo-modal.active {
+  display: flex;
+}
+.photo-modal-img {
+  max-width: 90vw;
+  max-height: 90vh;
+  object-fit: contain;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+  border-radius: 0 !important;
+}
+.photo-modal-close {
+  position: absolute;
+  top: 32px;
+  right: 48px;
+  font-size: 3rem;
+  color: #fff;
+  cursor: pointer;
+  z-index: 10000;
+  user-select: none;
+  transition: color 0.2s;
+}
+.photo-modal-close:hover {
+  color: #e74c3c;
+}
+
 /*
 @media (min-width: 1024px) and (max-width: 1199px) and (orientation: landscape) {
   .photo-strip {
