@@ -92,12 +92,14 @@ body {
   background: transparent;
   z-index: 1;
   padding-bottom: 16px;
+  height: calc(var(--vh, 1vh) * 100) !important;
 }
 .strip-track {
   display: flex;
   align-items: flex-end;
   gap: 16px;
   /* animation: scroll-strip 18s linear infinite; */
+  height: calc(var(--vh, 1vh) * 100) !important;
 }
 .strip-track img {
   width: 120px;
@@ -496,13 +498,16 @@ body {
   justify-content: center;
   align-items: center;
   transition: opacity 0.2s;
+  overflow: hidden;
+  padding-bottom: env(safe-area-inset-bottom, 24px);
 }
 .photo-modal.active {
   display: flex;
 }
 .photo-modal-img {
   max-width: 90vw;
-  max-height: 90vh;
+  max-height: calc(var(--vh, 1vh) * 80) !important;
+  width: auto;
   object-fit: contain;
   box-shadow: 0 8px 32px rgba(0,0,0,0.4);
   border-radius: 0 !important;
