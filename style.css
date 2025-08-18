@@ -17,8 +17,8 @@ body {
 }
 .logo {
   font-size: 2rem;
-  font-family: 'Georgia', serif;
-  font-weight: 500;
+  font-family: 'Inter', Arial, sans-serif;
+  font-weight: 600;
   letter-spacing: 0.05em;
 }
 .nav {
@@ -61,49 +61,121 @@ body {
   margin-bottom: 120px;
   gap: 48px;
 }
+.intro--hidden { visibility: hidden; }
 .intro-dot {
   font-size: 2.5rem;
   margin-top: 16px;
 }
 .intro-text {
-  font-family: 'Georgia', serif;
+  font-family: 'Inter', Arial, sans-serif;
   font-size: 1.1rem;
   text-align: center;
-  line-height: 1.5;
+  line-height: 1.6;
   margin-top: 80px;
+  font-weight: 400;
+  letter-spacing: 0.01em;
 }
 .intro-text .main {
-  font-weight: bold;
+  font-weight: 600;
+  font-size: 1.2rem;
+  letter-spacing: 0.02em;
 }
 .intro-text .sub {
   font-style: italic;
   color: #444;
+  font-weight: 400;
 }
 .intro-text em {
   font-style: italic;
+  font-weight: 400;
 }
+
+/* Desktop hero sphere (only desktop visible) */
+.hero-sphere { display: none; }
+@media (min-width: 1101px) {
+  .intro {
+    margin-bottom: 96px;
+  }
+  .hero-sphere {
+    display: block;
+    position: relative;
+    /* высота блока: размер сферы + зазор до ленты */
+    --sphere-size: 260px;
+    height: calc(var(--sphere-size) + 120px);
+    margin: 0 auto;
+  }
+  .hero-sphere #hero-sphere {
+    width: var(--sphere-size);
+    height: var(--sphere-size);
+    position: absolute;
+    left: 50%;
+    top: 0;
+    transform: translate(-50%, -6px); /* тонкая калибровка вертикали */
+  }
+  /* Точное совмещение позиции сферы на странице Contact с прежней позицией About */
+  .page-contact .hero-sphere {
+    margin-top: 224px;
+  }
+}
+
+/* Показываем сферу на мобильных только на странице Contact */
+.page-contact .hero-sphere { display: block; }
+@media (max-width: 1100px) {
+  /* Центрируем содержимое страницы Contact по вертикали/горизонтали */
+  .page-contact main {
+    min-height: calc(100vh - 120px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+  }
+  .page-contact .hero-sphere {
+    --sphere-size: 260px;
+    height: var(--sphere-size);
+    margin: 0 auto;
+    position: relative;
+  }
+  .page-contact .hero-sphere #hero-sphere {
+    width: var(--sphere-size);
+    height: var(--sphere-size);
+    position: relative;
+    left: auto;
+    top: auto;
+    transform: none;
+  }
+  /* Гарантируем прозрачный фон у канваса */
+  .page-contact #hero-sphere canvas { background: transparent !important; }
+}
+
+/* About: размещение Variant WGL2 */
+/* (About очищён — спецстили удалены) */
 
 .photo-strip {
   width: 100vw;
-  overflow: hidden;
   position: fixed;
   left: 0;
   bottom: 0;
   background: transparent;
   z-index: 1;
   padding-bottom: 16px;
-  height: calc(var(--vh, 1vh) * 100) !important;
+  height: auto; /* не перекрываем интро в портретной ориентации */
+  min-height: 220px; /* гарантируем видимую область */
 }
+
 .strip-track {
   display: flex;
   align-items: flex-end;
   gap: 16px;
-  /* animation: scroll-strip 18s linear infinite; */
-  height: calc(var(--vh, 1vh) * 100) !important;
+  height: auto;
+  min-height: 200px; /* чтобы изображения не схлопывались до 0 */
+  will-change: transform;
+  touch-action: pan-x;
+  -webkit-overflow-scrolling: touch;
 }
+
 .strip-track img {
-  width: 120px;
-  height: 170px;
+  width: 156px;   /* 120px * 1.3 = 156px */
+  height: 221px;  /* 170px * 1.3 = 221px */
   object-fit: contain;
   aspect-ratio: 12/17;
   border-radius: 0;
@@ -112,28 +184,14 @@ body {
   transition: none;
   margin: 0;
 }
-.strip-track img:hover {
-  /* transform: scale(1.04) translateY(-8px); */
-  /* box-shadow: 0 8px 32px rgba(0,0,0,0.18); */
-}
-.strip-track img.photo-large {
-  height: 320px;
-  width: 260px;
-  z-index: 2;
-  margin: 0 24px 0 8px;
-}
-.strip-track img.photo-medium {
-  height: 240px;
-  width: 180px;
-  z-index: 3;
-  margin: 0 40px 0 0;
-}
+
+/* Убираем конфликтующие стили для классов размеров */
+/* .strip-track img.photo-large,
+.strip-track img.photo-medium,
 .strip-track img.photo-small {
-  height: 180px;
-  width: 140px;
-  z-index: 1;
-  margin: 0 12px 0 32px;
-}
+  // удаляем все стили
+} */
+
 .strip-track img.photo-overlap-left,
 .strip-track img.photo-overlap-right {
   margin: 0;
@@ -151,9 +209,48 @@ body {
   100% { transform: translateX(-50%); }
 }
 
+/* Landscape режим - используем CSS переменные установленные JavaScript */
+@media screen and (orientation: landscape) and (max-height: 500px) {
+  .header, .intro, .nav, .logo, .instagram-link, .burger, .menu-mobile {
+    display: none !important;
+  }
+  
+  .photo-strip {
+    position: fixed !important;
+    top: var(--landscape-top, 0px) !important;
+    left: 0 !important;
+    width: 100vw !important;
+    height: var(--landscape-height, 310px) !important;
+    bottom: auto !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    background: transparent !important;
+    z-index: 9999 !important;
+  }
+  
+  .strip-track {
+    height: var(--landscape-height, 310px) !important;
+    width: 100vw !important;
+    gap: 16px !important;
+    align-items: center !important;
+    padding: 0 16px !important;
+    margin: 0 !important;
+    justify-content: flex-start !important;
+  }
+  
+  .strip-track img {
+    height: var(--landscape-height, 310px) !important;
+    width: auto !important;
+    max-height: none !important;
+    object-fit: cover !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+}
+
 @media (max-width: 900px) {
   .header, .intro { padding-left: 16px; padding-right: 16px; }
-  .strip-track img { height: 160px; }
+  .strip-track img { height: 208px; } /* 160px * 1.3 = 208px */
   .intro-text { font-size: 1rem; }
 }
 
@@ -196,15 +293,8 @@ body {
   }
 }
 
+/* Мобильные устройства */
 @media (max-width: 600px) {
-  .photo-strip {
-    padding-bottom: 120px;
-    height: auto;
-    margin-top: 40px;
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-  }
   .strip-track {
     display: flex;
     align-items: flex-end;
@@ -215,9 +305,9 @@ body {
   }
   .strip-track img {
     width: 36vw;
-    max-width: 130px;
-    height: 240px;
-    object-fit: contain;
+    max-width: 169px;
+    height: 312px;
+    object-fit: cover; /* одинаковая высота, кроп по боксу */
     margin: 0 1vw;
     background: transparent;
     box-shadow: none;
@@ -225,86 +315,44 @@ body {
   }
   .intro {
     margin-top: 24px;
-    margin-bottom: 48px;
+    margin-bottom: 340px; /* место под фиксированную ленту фото */
     gap: 16px;
     padding-left: 8px;
     padding-right: 8px;
   }
-  .intro-text {
-    font-size: 0.95rem;
-  }
-  .header {
-    padding: 16px 8px 0 8px;
-  }
-  .logo {
-    font-size: 1.2rem;
-  }
-  .nav {
-    display: none;
-  }
-  .instagram-link {
-    right: 8px;
-    top: 16px;
-    font-size: 0.9rem;
-  }
-  .burger {
-    display: block !important;
-  }
+  .intro-text { font-size: 0.95rem; }
+  .header { padding: 16px 8px 0 8px; }
+  .logo { font-size: 1.2rem; }
+  .nav { display: none; }
+  .instagram-link { right: 8px; top: 16px; font-size: 0.9rem; }
+  .burger { display: block !important; }
 }
 
 @media (min-width: 601px) and (max-width: 900px) {
-  .photo-strip {
-    padding-bottom: 140px;
-    height: auto;
-    margin-top: 32px;
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-  }
-  .strip-track {
-    display: flex;
-    align-items: flex-end;
-    gap: 8px;
-    margin: 0 auto;
-    width: 100vw;
-    height: auto;
-  }
+  .strip-track { display: flex; align-items: flex-end; gap: 8px; margin: 0 auto; width: 100vw; height: auto; }
   .strip-track img {
     width: 22vw;
-    max-width: 200px;
-    height: 320px;
-    object-fit: contain;
+    max-width: 260px;
+    height: 416px;
+    object-fit: cover; /* одинаковая высота */
     margin: 0 1vw;
     background: transparent;
     box-shadow: none;
     border: none;
   }
-  .intro {
-    margin-top: 32px;
-    margin-bottom: 56px;
-    gap: 20px;
-    padding-left: 16px;
-    padding-right: 16px;
-  }
-  .intro-text {
-    font-size: 1.15rem;
-  }
-  .header {
-    padding: 24px 16px 0 16px;
-  }
-  .logo {
-    font-size: 1.5rem;
-  }
-  .nav {
-    display: flex !important;
-  }
-  .instagram-link {
-    right: 16px;
-    top: 24px;
-    font-size: 1.1rem;
-  }
-  .burger {
-    display: none !important;
+  .intro { margin-top: 32px; margin-bottom: 56px; gap: 20px; padding-left: 16px; padding-right: 16px; }
+  .intro-text { font-size: 1.15rem; }
+  .header { padding: 24px 16px 0 16px; }
+  .logo { font-size: 1.5rem; }
+  .nav { display: flex !important; }
+  .instagram-link { right: 16px; top: 24px; font-size: 1.1rem; }
+  .burger { display: none !important; }
+}
+
+/* iPad Pro: landscape — одинаковая высота превью */
+@media (min-width: 1024px) and (max-width: 1366px) and (orientation: landscape) {
+  .strip-track img {
+    object-fit: cover !important; /* единая высота, кроп */
   }
 }
 
@@ -360,6 +408,27 @@ body {
   }
 }
 
+/* iPad Pro в вертикальном положении (portrait) */
+@media (min-width: 1024px) and (max-width: 1366px) and (orientation: portrait) {
+  .photo-strip {
+    height: 500px !important; /* Увеличиваем высоту контейнера */
+    padding-bottom: 40px !important;
+  }
+  
+  .strip-track {
+    height: 100% !important;
+    gap: 24px !important; /* Увеличиваем отступы между фото */
+    padding: 0 32px !important;
+  }
+  
+  .strip-track img {
+    height: 400px !important; /* Увеличиваем высоту всех фото */
+    width: auto !important;
+    object-fit: cover !important;
+    margin: 0 !important; /* Убираем все отступы */
+  }
+}
+
 @media (min-width: 600px) and (max-width: 1023px) and (orientation: landscape) {
   .intro,
   .header,
@@ -393,7 +462,7 @@ body {
   .strip-track img {
     height: 100vh !important;
     width: auto !important;
-    object-fit: contain !important;
+    object-fit: cover !important;
     max-width: none !important;
     aspect-ratio: auto !important;
     margin: 0 !important;
@@ -493,47 +562,180 @@ body {
   left: 0;
   top: 0;
   width: 100vw;
-  height: 100vh;
+  height: 100dvh; /* чтобы не обрезалось на iOS */
   background: rgba(0,0,0,0.92);
   justify-content: center;
   align-items: center;
   transition: opacity 0.2s;
-  overflow: hidden;
-  padding-bottom: env(safe-area-inset-bottom, 24px);
 }
-.photo-modal.active {
-  display: flex;
-}
+.photo-modal.active { display: flex; }
 .photo-modal-img {
   max-width: 90vw;
-  max-height: calc(var(--vh, 1vh) * 80) !important;
-  width: auto;
+  max-height: calc(100dvh - 64px); /* запас под верхние элементы */
   object-fit: contain;
   box-shadow: 0 8px 32px rgba(0,0,0,0.4);
   border-radius: 0 !important;
 }
+/* Close button safe-area positioning */
 .photo-modal-close {
   position: absolute;
-  top: 32px;
-  right: 48px;
+  top: calc(env(safe-area-inset-top) + 12px);
+  right: clamp(16px, 3vw, 32px);
   font-size: 3rem;
   color: #fff;
   cursor: pointer;
   z-index: 10000;
   user-select: none;
   transition: color 0.2s;
+  -webkit-tap-highlight-color: transparent;
+  pointer-events: auto;
 }
 .photo-modal-close:hover {
   color: #e74c3c;
 }
 
-/*
-@media (min-width: 1024px) and (max-width: 1199px) and (orientation: landscape) {
-  .photo-strip {
-    height: 100vh !important;
+/* Кнопки навигации по фото */
+.photo-modal-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: rgba(255,255,255,0.8);
+  font-size: 3rem;
+  cursor: pointer;
+  z-index: 10000;
+  user-select: none;
+  transition: all 0.3s;
+  width: auto;
+  height: auto;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 1; /* Начальное состояние - видимы */
+}
+
+.photo-modal-nav:hover {
+  color: rgba(255,255,255,1);
+  transform: translateY(-50%) scale(1.2);
+}
+
+.photo-modal-prev {
+  left: 20px;
+}
+
+.photo-modal-next {
+  right: 20px;
+}
+
+/* Адаптивность для мобильных */
+@media (max-width: 768px) {
+  .photo-modal-nav {
+    font-size: 2.5rem;
+    padding: 15px;
   }
-  .strip-track {
-    height: 100vh !important;
+  
+  .photo-modal-prev {
+    left: 15px;
+  }
+  
+  .photo-modal-next {
+    right: 15px;
   }
 }
-*/ 
+
+@media (max-width: 480px) {
+  .photo-modal-nav {
+    font-size: 2rem;
+    padding: 10px;
+  }
+  
+  .photo-modal-prev {
+    left: 10px;
+  }
+  
+  .photo-modal-next {
+    right: 10px;
+  }
+} 
+
+/* === Unified thumbnail sizing (consistent across breakpoints) === */
+.strip-track img {
+  height: var(--thumb-h, 240px);
+  width: auto;
+  aspect-ratio: 2 / 3;
+  object-fit: cover;
+}
+
+/* Heights per breakpoints */
+@media (max-width: 600px) {
+  :root { --thumb-h: 300px; }
+}
+@media (min-width: 601px) and (max-width: 900px) {
+  :root { --thumb-h: 320px; }
+}
+@media (min-width: 901px) and (max-width: 1100px) {
+  :root { --thumb-h: 270px; }
+}
+@media (min-width: 1101px) {
+  :root { --thumb-h: 240px; }
+}
+/* iPad Pro */
+@media (min-width: 1024px) and (max-width: 1366px) and (orientation: portrait) {
+  :root { --thumb-h: 360px; }
+}
+@media (min-width: 1024px) and (max-width: 1366px) and (orientation: landscape) {
+  :root { --thumb-h: 300px; }
+  .strip-track img { height: var(--thumb-h) !important; object-fit: cover !important; }
+} 
+
+/* iPad Pro landscape: лента фиксирована снизу, текст виден */
+@media (min-width: 1024px) and (max-width: 1366px) and (orientation: landscape) {
+  .photo-strip {
+    position: fixed !important;
+    left: 0 !important;
+    bottom: 24px !important;
+    width: 100vw !important;
+    height: auto !important;
+    margin: 0 !important;
+    background: transparent !important;
+    padding: 0 16px !important;
+    z-index: 1 !important;
+  }
+  main { padding-bottom: calc(var(--thumb-h, 300px) + 88px) !important; }
+} 
+
+/* iPad Pro landscape: ensure scroll and text visible */
+@media (min-width: 1024px) and (max-width: 1366px) and (orientation: landscape) {
+  html, body { height: auto !important; overflow: auto !important; }
+  .header, .intro { display: block !important; }
+  .photo-strip { bottom: calc(env(safe-area-inset-bottom) + 24px) !important; }
+  main { padding-bottom: calc(var(--thumb-h, 300px) + env(safe-area-inset-bottom) + 96px) !important; }
+} 
+
+/* iPad Pro landscape — финальные правки: безопасный отступ и снятие конфликтов высоты */
+@media (min-width: 1024px) and (max-width: 1366px) and (orientation: landscape) {
+  html, body { height: auto !important; overflow: auto !important; }
+  .header, .intro { display: block !important; }
+
+  .photo-strip {
+    position: fixed !important;
+    left: 0 !important;
+    top: auto !important; /* сброс возможного top:0 из других правил */
+    bottom: clamp(40px, 5vh, 72px) !important; /* устойчиво на iPad Safari */
+    width: 100vw !important;
+    height: auto !important;
+    margin: 0 !important;
+    background: transparent !important;
+    padding: 0 16px !important;
+    z-index: 1 !important;
+  }
+
+  main {
+    padding-bottom: calc(var(--thumb-h, 300px) + clamp(40px, 5vh, 72px)) !important;
+  }
+
+  .strip-track { height: auto !important; align-items: flex-end !important; }
+  .strip-track img { height: var(--thumb-h, 300px) !important; width: auto !important; object-fit: cover !important; }
+} 

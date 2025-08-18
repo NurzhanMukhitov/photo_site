@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Variant WGL2 — Noise Points Sphere</title>
+  <style>
+    html,body { margin:0; height:100%; background:#ffffff; display:flex; align-items:center; justify-content:center; }
+    /* не масштабировать канвасы — чтобы круг был идеальным */
+    canvas { display:block; }
+  </style>
+</head>
+<body>
+  <canvas id="canvas2D"></canvas>
+  <canvas id="canvasWebGL2" style="display:none"></canvas>
+  <script src="tools.js"></script>
+  <script src="snoise4D.js"></script>
+  <script src="snoise4DImage.js"></script>
+  <script src="displace.js"></script>
+  <script src="shaderSource.js"></script>
+  <script src="mySketch.js"></script>
+</body>
+</html>
+
+
