@@ -6,6 +6,8 @@ body {
   font-family: 'Inter', Arial, sans-serif;
 }
 
+/* (убран глобальный fade-in страниц) */
+
 .header {
   display: flex;
   justify-content: space-between;
@@ -556,7 +558,6 @@ body {
 
 /* Модальное окно для просмотра фото */
 .photo-modal {
-  display: none;
   position: fixed;
   z-index: 9999;
   left: 0;
@@ -564,18 +565,28 @@ body {
   width: 100vw;
   height: 100dvh; /* чтобы не обрезалось на iOS */
   background: rgba(0,0,0,0.92);
+  display: flex; /* всегда в потоке для плавного fade */
   justify-content: center;
   align-items: center;
-  transition: opacity 0.2s;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
 }
-.photo-modal.active { display: flex; }
+.photo-modal.active {
+  opacity: 1;
+  pointer-events: auto;
+}
 .photo-modal-img {
   max-width: 90vw;
   max-height: calc(100dvh - 64px); /* запас под верхние элементы */
   object-fit: contain;
   box-shadow: 0 8px 32px rgba(0,0,0,0.4);
   border-radius: 0 !important;
+  opacity: 0;
+  transform: scale(0.985);
+  transition: opacity 0.25s ease, transform 0.25s ease;
 }
+.photo-modal.active .photo-modal-img { opacity: 1; transform: none; }
 /* Close button safe-area positioning */
 .photo-modal-close {
   position: absolute;
@@ -666,6 +677,15 @@ body {
   width: auto;
   aspect-ratio: 2 / 3;
   object-fit: cover;
+}
+
+/* Fade-in для миниатюр (уважаем prefers-reduced-motion) */
+@media (prefers-reduced-motion: no-preference) {
+  .fade-in { opacity: 0; transform: translateY(6px); transition: opacity .3s ease, transform .4s ease; }
+  .fade-in.is-visible { opacity: 1; transform: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .fade-in { opacity: 1 !important; transform: none !important; transition: none !important; }
 }
 
 /* Heights per breakpoints */
