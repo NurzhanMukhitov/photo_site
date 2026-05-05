@@ -161,7 +161,7 @@ body {
   z-index: 1;
   padding-bottom: 16px;
   height: auto; /* не перекрываем интро в портретной ориентации */
-  min-height: 220px; /* гарантируем видимую область */
+  min-height: 280px; /* увеличиваем гарантированную область ленты */
 }
 
 .strip-track {
@@ -690,23 +690,23 @@ body {
 
 /* Heights per breakpoints */
 @media (max-width: 600px) {
-  :root { --thumb-h: 300px; }
+  :root { --thumb-h: 375px; }
 }
 @media (min-width: 601px) and (max-width: 900px) {
-  :root { --thumb-h: 320px; }
+  :root { --thumb-h: 400px; }
 }
 @media (min-width: 901px) and (max-width: 1100px) {
-  :root { --thumb-h: 270px; }
+  :root { --thumb-h: 340px; }
 }
 @media (min-width: 1101px) {
-  :root { --thumb-h: 240px; }
+  :root { --thumb-h: 300px; }
 }
 /* iPad Pro */
 @media (min-width: 1024px) and (max-width: 1366px) and (orientation: portrait) {
-  :root { --thumb-h: 360px; }
+  :root { --thumb-h: 450px; }
 }
 @media (min-width: 1024px) and (max-width: 1366px) and (orientation: landscape) {
-  :root { --thumb-h: 300px; }
+  :root { --thumb-h: 360px; }
   .strip-track img { height: var(--thumb-h) !important; object-fit: cover !important; }
 } 
 
