@@ -306,10 +306,8 @@ body {
     height: auto;
   }
   .strip-track img {
-    width: 36vw;
-    max-width: 169px;
-    height: 312px;
-    object-fit: cover; /* одинаковая высота, кроп по боксу */
+    width: auto !important; /* ширина из высоты (см. --thumb-h ниже по файлу) */
+    max-width: none;
     margin: 0 1vw;
     background: transparent;
     box-shadow: none;
