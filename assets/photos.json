@@ -243,5 +243,30 @@
     "id": "photo49",
     "thumb": "assets/webp/thumbs/photo49-thumb.webp",
     "full": "assets/webp/full/photo49-full.webp"
+  },
+  {
+    "id": "photo50",
+    "thumb": "assets/webp/thumbs/photo50-thumb.webp",
+    "full": "assets/webp/full/photo50-full.webp"
+  },
+  {
+    "id": "photo51",
+    "thumb": "assets/webp/thumbs/photo51-thumb.webp",
+    "full": "assets/webp/full/photo51-full.webp"
+  },
+  {
+    "id": "photo52",
+    "thumb": "assets/webp/thumbs/photo52-thumb.webp",
+    "full": "assets/webp/full/photo52-full.webp"
+  },
+  {
+    "id": "photo53",
+    "thumb": "assets/webp/thumbs/photo53-thumb.webp",
+    "full": "assets/webp/full/photo53-full.webp"
+  },
+  {
+    "id": "photo54",
+    "thumb": "assets/webp/thumbs/photo54-thumb.webp",
+    "full": "assets/webp/full/photo54-full.webp"
   }
 ]
