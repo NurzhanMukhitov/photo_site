@@ -623,7 +623,20 @@ body {
   border-radius: 0;
   box-shadow: none;
   background: transparent;
-  transition: none;
+  cursor: pointer;
+  transition: opacity 0.2s ease, transform 0.25s ease;
+}
+
+/* Hover/focus state — учитываем prefers-reduced-motion */
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .strip-track img:hover {
+    opacity: 0.78;
+    transform: translateY(-2px);
+  }
+}
+.strip-track img:focus-visible {
+  outline: 2px solid #222;
+  outline-offset: 4px;
 }
 
 /* Fade-in для миниатюр (уважаем prefers-reduced-motion) */

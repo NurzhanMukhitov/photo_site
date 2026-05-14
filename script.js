@@ -93,6 +93,17 @@ function buildStripFromShuffled() {
     img.src = photo.thumb;
     img.alt = photo.id || `Photo ${i + 1}`;
     img.dataset.idx = String(i % uniqueCount);
+    img.classList.add('fade-in');
+    img.loading = i < 4 ? 'eager' : 'lazy';   // первые 4 — eager, остальные lazy
+    if (i === 0) img.fetchPriority = 'high';  // LCP hint для первого превью
+
+    // Fade-in после загрузки thumb
+    if (img.complete && img.naturalWidth > 0) {
+      img.classList.add('is-visible');
+    } else {
+      img.addEventListener('load', () => img.classList.add('is-visible'), { once: true });
+      img.addEventListener('error', () => img.classList.add('is-visible'), { once: true });
+    }
 
     img.addEventListener('click', () => {
       if (isDragging) return;
