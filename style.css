@@ -92,6 +92,53 @@ body {
   font-weight: 400;
 }
 
+/* === About page === */
+.page-about main {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100vh - 120px);
+  padding: 0 24px;
+}
+.about {
+  max-width: 560px;
+  width: 100%;
+}
+.about-text {
+  font-family: 'Inter', Arial, sans-serif;
+  font-size: 1.05rem;
+  line-height: 1.7;
+  color: #222;
+  letter-spacing: 0.01em;
+  text-align: center;
+}
+.about-text p {
+  margin: 0 0 1.2em;
+}
+.about-text p:last-child {
+  margin-bottom: 0;
+}
+.about-lead {
+  font-size: 1.35rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin-bottom: 1.6em !important;
+}
+.about-text a {
+  color: #222;
+  text-decoration: none;
+  border-bottom: 1px solid #ccc;
+  transition: border-color 0.2s;
+}
+.about-text a:hover {
+  border-bottom-color: #222;
+}
+
+@media (max-width: 600px) {
+  .about-text { font-size: 1rem; }
+  .about-lead { font-size: 1.2rem; }
+}
+
 /* Desktop hero sphere (only desktop visible) */
 .hero-sphere { display: none; }
 @media (min-width: 1101px) {
