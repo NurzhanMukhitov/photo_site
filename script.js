@@ -2,9 +2,22 @@
 // Оптимизированная JavaScript анимация для iOS Safari
 // Обновлено: исправлена бесконечная навигация для всех устройств
 
-console.log('🚀 Script loaded successfully!');
-console.log('📱 iOS Safari optimized animation');
-console.log('🔄 Infinite navigation enabled for all devices');
+// Debug-логи: включить через ?debug=1 в URL или localStorage.debug = '1'
+const DEBUG = (() => {
+  try {
+    const params = new URLSearchParams(window.location.search);
+    return params.get('debug') === '1' || localStorage.getItem('debug') === '1';
+  } catch (e) { return false; }
+})();
+const log = DEBUG ? console.log.bind(console) : () => {};
+const warn = DEBUG ? console.warn.bind(console) : () => {};
+const errorLog = console.error.bind(console); // ошибки всегда логируем
+
+if (DEBUG) {
+  log('🚀 Script loaded successfully!');
+  log('📱 iOS Safari optimized animation');
+  log('🔄 Infinite navigation enabled for all devices');
+}
 
 // Элементы
 const stripTrack = document.querySelector('.strip-track');
@@ -24,18 +37,6 @@ let lastTouchTime = 0;
 let shuffledPhotoOrder = [];
 let currentPhotoIndex = 0;
 
-// Массив фотографий для перемешивания
-const photoSources = [
-  'assets/webp/photo1.webp',
-  'assets/webp/photo2.webp',
-  'assets/webp/photo3.webp',
-  'assets/webp/photo4.webp',
-  'assets/webp/photo5.webp',
-  'assets/webp/photo6.webp',
-  'assets/webp/photo7.webp',
-  'assets/webp/photo8.webp'
-];
-
 // Функция перемешивания массива (алгоритм Fisher-Yates)
 function shuffleArray(array) {
   const shuffled = [...array];
@@ -53,9 +54,9 @@ async function loadPhotosManifest() {
   try {
     const res = await fetch('assets/photos.json');
     photosManifest = await res.json();
-    console.log('📁 photos.json loaded:', photosManifest.length);
+    log('📁 photos.json loaded:', photosManifest.length);
   } catch (e) {
-    console.error('Failed to load photos.json', e);
+    errorLog('Failed to load photos.json', e);
     photosManifest = [];
   }
 }
@@ -109,12 +110,12 @@ function buildStripFromShuffled() {
 // Override shufflePhotos to use manifest
 function shufflePhotos() {
   if (!photosManifest || photosManifest.length === 0) {
-    console.warn('No manifest yet, skipping shuffle');
+    warn('No manifest yet, skipping shuffle');
     return;
   }
   shuffledPhotoOrder = shuffleArray(photosManifest);
   buildStripFromShuffled();
-  console.log('🔀 Shuffled', shuffledPhotoOrder.length, 'photos, trackWidth:', stripTrack.scrollWidth);
+  log('🔀 Shuffled', shuffledPhotoOrder.length, 'photos, trackWidth:', stripTrack.scrollWidth);
 }
 
 // Override showPhoto to use full images from manifest
@@ -122,22 +123,22 @@ function showPhoto(index) {
   if (!shuffledPhotoOrder || shuffledPhotoOrder.length === 0) return;
   const max = shuffledPhotoOrder.length;
   
-  console.log('🔄 showPhoto called with index:', index, 'max:', max);
+  log('🔄 showPhoto called with index:', index, 'max:', max);
   
   // Бесконечная навигация: зацикливаем индексы
   if (index < 0) {
     index = max - 1; // Переходим к последнему фото
-    console.log('🔄 Index < 0, cycling to last photo:', index);
+    log('🔄 Index < 0, cycling to last photo:', index);
   } else if (index >= max) {
     index = 0; // Переходим к первому фото
-    console.log('🔄 Index >= max, cycling to first photo:', index);
+    log('🔄 Index >= max, cycling to first photo:', index);
   }
   
   currentPhotoIndex = index;
   const photo = shuffledPhotoOrder[index];
   if (!photo) return;
   
-  console.log('🔄 Showing photo:', photo.id || `Photo ${index + 1}`);
+  log('🔄 Showing photo:', photo.id || `Photo ${index + 1}`);
   
   photoModalImg.src = photo.full;
   photoModal.classList.add('active');
@@ -158,7 +159,7 @@ function ensureStripPopulated() {
   setTimeout(async () => {
     if (!stripTrack) return;
     if (stripTrack.children.length === 0) {
-      console.warn('⚠️ Strip is empty, retrying manifest load...');
+      warn('⚠️ Strip is empty, retrying manifest load...');
       if (!photosManifest || photosManifest.length === 0) {
         await loadPhotosManifest();
       }
@@ -181,10 +182,10 @@ const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/
 const isChromeiOS = navigator.userAgent.includes('CriOS');
 const isSafariiOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !navigator.userAgent.includes('CriOS');
 
-console.log('🍎 iOS detected:', isIOS);
-console.log('📱 Mobile detected:', isMobile);
-console.log('🌐 Chrome iOS:', isChromeiOS);
-console.log('🧭 Safari iOS:', isSafariiOS);
+log('🍎 iOS detected:', isIOS);
+log('📱 Mobile detected:', isMobile);
+log('🌐 Chrome iOS:', isChromeiOS);
+log('🧭 Safari iOS:', isSafariiOS);
 
 // Детальная диагностика размеров экрана
 function logScreenDiagnostics() {
@@ -224,14 +225,14 @@ function logScreenDiagnostics() {
     bodyHeight: document.body ? document.body.clientHeight : 'не загружен'
   };
   
-  console.log('📊 === ДИАГНОСТИКА РАЗМЕРОВ ЭКРАНА ===');
-  console.table(diagnostics);
+  log('📊 === ДИАГНОСТИКА РАЗМЕРОВ ЭКРАНА ===');
+  log(diagnostics);
   
   // Дополнительные проверки для мобильных
   if (isMobile || isIOS) {
-    console.log('📱 === МОБИЛЬНАЯ ДИАГНОСТИКА ===');
-    console.log('🔄 Ориентация:', Math.abs(window.orientation) === 90 ? 'Landscape' : 'Portrait');
-    console.log('📐 Соотношение сторон:', (window.innerWidth / window.innerHeight).toFixed(2));
+    log('📱 === МОБИЛЬНАЯ ДИАГНОСТИКА ===');
+    log('🔄 Ориентация:', Math.abs(window.orientation) === 90 ? 'Landscape' : 'Portrait');
+    log('📐 Соотношение сторон:', (window.innerWidth / window.innerHeight).toFixed(2));
     
     // Проверяем какие медиа-запросы срабатывают
     const mediaQueries = [
@@ -244,16 +245,16 @@ function logScreenDiagnostics() {
       'screen and (orientation: landscape) and (max-height: 500px)'
     ];
     
-    console.log('🎯 === МЕДИА-ЗАПРОСЫ ===');
+    log('🎯 === МЕДИА-ЗАПРОСЫ ===');
     mediaQueries.forEach(query => {
       const matches = window.matchMedia(query).matches;
-      console.log(`${matches ? '✅' : '❌'} ${query}`);
+      log(`${matches ? '✅' : '❌'} ${query}`);
     });
   }
 }
 
-// Запускаем диагностику
-logScreenDiagnostics();
+// Запускаем диагностику (только в debug-режиме)
+if (DEBUG) logScreenDiagnostics();
 
 // Простая JavaScript анимация
 function animate() {
@@ -274,25 +275,25 @@ function startAnimation() {
   if (isRunning) return;
   isRunning = true;
   isPaused = false;
-  console.log('▶️ Animation started');
+  log('▶️ Animation started');
   animate();
 }
 
 function pauseAnimation() {
   isPaused = true;
-  console.log('⏸️ Animation paused');
+  log('⏸️ Animation paused');
 }
 
 function resumeAnimation() {
   if (!isRunning) return;
   isPaused = false;
-  console.log('▶️ Animation resumed');
+  log('▶️ Animation resumed');
   animate();
 }
 
 // Touch события с оптимизацией для iOS
 stripTrack.addEventListener('touchstart', (e) => {
-  console.log('🖐️ Touch start');
+  log('🖐️ Touch start');
   isDragging = true;
   startX = e.touches[0].clientX;
   startPosition = position;
@@ -326,11 +327,11 @@ stripTrack.addEventListener('touchmove', (e) => {
   stripTrack.style.transform = `translateX(${position}px)`;
   
   lastTouchTime = currentTime;
-  console.log('👆 Touch move:', Math.round(deltaX));
+  log('👆 Touch move:', Math.round(deltaX));
 }, { passive: false });
 
 stripTrack.addEventListener('touchend', (e) => {
-  console.log('👋 Touch end');
+  log('👋 Touch end');
   isDragging = false;
   
   // Нормализуем позицию после свайпа
@@ -364,12 +365,12 @@ const mobileMenu = document.getElementById('mobile-menu');
 
 if (burger && mobileMenu) {
   burger.addEventListener('click', () => {
-    console.log('🍔 Burger menu clicked');
+    log('🍔 Burger menu clicked');
     mobileMenu.classList.toggle('active');
   });
   mobileMenu.querySelectorAll('a').forEach(link => {
     link.addEventListener('click', () => {
-      console.log('🔗 Mobile menu link clicked:', link.textContent);
+      log('🔗 Mobile menu link clicked:', link.textContent);
       mobileMenu.classList.remove('active');
     });
   });
@@ -378,7 +379,7 @@ if (burger && mobileMenu) {
 const closeMenuBtn = document.getElementById('close-menu');
 if (closeMenuBtn && mobileMenu) {
   closeMenuBtn.addEventListener('click', () => {
-    console.log('❌ Close menu clicked');
+    log('❌ Close menu clicked');
     mobileMenu.classList.remove('active');
   });
 }
@@ -391,12 +392,12 @@ const photoModalPrev = document.getElementById('photo-modal-prev');
 const photoModalNext = document.getElementById('photo-modal-next');
 
 // Логируем состояние элементов модалки
-console.log('🔍 Modal elements check:');
-console.log('  photoModal:', photoModal ? '✅ Found' : '❌ Not found');
-console.log('  photoModalImg:', photoModalImg ? '✅ Found' : '❌ Not found');
-console.log('  photoModalClose:', photoModalClose ? '✅ Found' : '❌ Not found');
-console.log('  photoModalPrev:', photoModalPrev ? '✅ Found' : '❌ Not found');
-console.log('  photoModalNext:', photoModalNext ? '✅ Found' : '❌ Not found');
+log('🔍 Modal elements check:');
+log('  photoModal:', photoModal ? '✅ Found' : '❌ Not found');
+log('  photoModalImg:', photoModalImg ? '✅ Found' : '❌ Not found');
+log('  photoModalClose:', photoModalClose ? '✅ Found' : '❌ Not found');
+log('  photoModalPrev:', photoModalPrev ? '✅ Found' : '❌ Not found');
+log('  photoModalNext:', photoModalNext ? '✅ Found' : '❌ Not found');
 
 // Переменные для навигации
 let navigationTimeout = null;
@@ -438,23 +439,23 @@ function showNavigationButtons() {
 if (photoModalPrev) {
   photoModalPrev.addEventListener('click', (e) => {
     e.stopPropagation();
-    console.log('🔄 Prev button clicked, current index:', currentPhotoIndex);
+    log('🔄 Prev button clicked, current index:', currentPhotoIndex);
     // Бесконечная навигация: всегда можно перейти к предыдущему
     showPhoto(currentPhotoIndex - 1);
   });
 } else {
-  console.warn('⚠️ photoModalPrev element not found');
+  warn('⚠️ photoModalPrev element not found');
 }
 
 if (photoModalNext) {
   photoModalNext.addEventListener('click', (e) => {
     e.stopPropagation();
-    console.log('🔄 Next button clicked, current index:', currentPhotoIndex);
+    log('🔄 Next button clicked, current index:', currentPhotoIndex);
     // Бесконечная навигация: всегда можно перейти к следующему
     showPhoto(currentPhotoIndex + 1);
   });
 } else {
-  console.warn('⚠️ photoModalNext element not found');
+  warn('⚠️ photoModalNext element not found');
 }
 
 // Закрытие модалки
@@ -470,7 +471,7 @@ if (photoModalClose) {
     closePhotoModal();
   });
 } else {
-  console.warn('⚠️ photoModalClose element not found');
+  warn('⚠️ photoModalClose element not found');
 }
 
 // Надёжное закрытие модалки на мобильных: обрабатываем touch/pointer
@@ -492,7 +493,7 @@ if (photoModal) {
     }
   });
 } else {
-  console.warn('⚠️ photoModal element not found');
+  warn('⚠️ photoModal element not found');
 }
 
 document.addEventListener('keydown', (e) => {
