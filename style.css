@@ -600,6 +600,9 @@ body {
 } 
 
 /* === Unified .strip-track img (объединённое правило) === */
+/* NB: margin намеренно НЕ задаётся здесь — мобильный/планшетный media-блок выше
+   ставит margin: 0 1vw для зазора между фото. Если задать margin тут — баг:
+   на ≤900px фото слипнутся. */
 .strip-track img {
   height: var(--thumb-h, 240px);
   width: auto;
@@ -609,7 +612,6 @@ body {
   box-shadow: none;
   background: transparent;
   transition: none;
-  margin: 0;
 }
 
 /* Fade-in для миниатюр (уважаем prefers-reduced-motion) */
