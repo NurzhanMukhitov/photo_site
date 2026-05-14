@@ -39,11 +39,11 @@
       </div>
     </section>
   </main>
-  <div id="photo-modal" class="photo-modal">
-    <span class="photo-modal-close" id="photo-modal-close">&times;</span>
-    <button class="photo-modal-nav photo-modal-prev" id="photo-modal-prev" aria-label="Previous photo">&larr;</button>
-    <button class="photo-modal-nav photo-modal-next" id="photo-modal-next" aria-label="Next photo">&rarr;</button>
-    <img class="photo-modal-img" id="photo-modal-img" src="" alt="Фото">
+  <div id="photo-modal" class="photo-modal" role="dialog" aria-modal="true" aria-label="Photo viewer" aria-hidden="true">
+    <button class="photo-modal-close" id="photo-modal-close" type="button" aria-label="Close photo viewer">&times;</button>
+    <button class="photo-modal-nav photo-modal-prev" id="photo-modal-prev" type="button" aria-label="Previous photo">&larr;</button>
+    <button class="photo-modal-nav photo-modal-next" id="photo-modal-next" type="button" aria-label="Next photo">&rarr;</button>
+    <img class="photo-modal-img" id="photo-modal-img" src="" alt="">
   </div>
   <!-- Web Vitals: локальный лог в консоль -->
   <script src="https://unpkg.com/web-vitals@3/dist/web-vitals.iife.js" defer onload="(function(){try{var w=window.webVitals; if(!w) return; var log=function(m){console.log('📈',m.name,Math.round(m.value),m);}; w.getCLS(log); w.getLCP(log); w.getINP(log);}catch(e){}})()"></script>

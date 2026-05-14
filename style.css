@@ -533,16 +533,26 @@ body {
   top: calc(env(safe-area-inset-top) + 12px);
   right: clamp(16px, 3vw, 32px);
   font-size: 3rem;
+  line-height: 1;
   color: #fff;
+  background: transparent;
+  border: 0;
+  padding: 4px 12px;
   cursor: pointer;
   z-index: 10000;
   user-select: none;
   transition: color 0.2s;
   -webkit-tap-highlight-color: transparent;
   pointer-events: auto;
+  font-family: inherit;
 }
 .photo-modal-close:hover {
   color: #e74c3c;
+}
+.photo-modal-close:focus-visible,
+.photo-modal-nav:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 2px;
 }
 
 /* Кнопки навигации по фото */

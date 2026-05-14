@@ -129,13 +129,16 @@ function shufflePhotos() {
   log('🔀 Shuffled', shuffledPhotoOrder.length, 'photos, trackWidth:', stripTrack.scrollWidth);
 }
 
+// A11y: какой элемент был сфокусирован до открытия модалки
+let lastFocusedBeforeModal = null;
+
 // Override showPhoto to use full images from manifest
 function showPhoto(index) {
   if (!shuffledPhotoOrder || shuffledPhotoOrder.length === 0) return;
   const max = shuffledPhotoOrder.length;
-  
+
   log('🔄 showPhoto called with index:', index, 'max:', max);
-  
+
   // Бесконечная навигация: зацикливаем индексы
   if (index < 0) {
     index = max - 1; // Переходим к последнему фото
@@ -144,15 +147,29 @@ function showPhoto(index) {
     index = 0; // Переходим к первому фото
     log('🔄 Index >= max, cycling to first photo:', index);
   }
-  
+
   currentPhotoIndex = index;
   const photo = shuffledPhotoOrder[index];
   if (!photo) return;
-  
+
   log('🔄 Showing photo:', photo.id || `Photo ${index + 1}`);
-  
+
+  // Если модалка ещё закрыта — это новое открытие: запоминаем фокус и переводим на close
+  const wasClosed = !photoModal.classList.contains('active');
+  if (wasClosed) {
+    lastFocusedBeforeModal = document.activeElement;
+  }
+
   photoModalImg.src = photo.full;
+  photoModalImg.alt = photo.id || `Photo ${index + 1}`;
   photoModal.classList.add('active');
+  photoModal.setAttribute('aria-hidden', 'false');
+
+  if (wasClosed && photoModalClose) {
+    // даём браузеру кадр чтобы transition opacity не сбрасывал фокус
+    requestAnimationFrame(() => photoModalClose.focus());
+  }
+
   updateNavigationButtons();
   showNavigationButtons();
 }
@@ -472,8 +489,15 @@ if (photoModalNext) {
 // Закрытие модалки
 function closePhotoModal() {
   photoModal.classList.remove('active');
+  photoModal.setAttribute('aria-hidden', 'true');
   photoModalImg.src = '';
+  photoModalImg.alt = '';
   clearTimeout(navigationTimeout);
+  // Возвращаем фокус на элемент, который был активен до открытия (a11y)
+  if (lastFocusedBeforeModal && typeof lastFocusedBeforeModal.focus === 'function') {
+    try { lastFocusedBeforeModal.focus(); } catch (e) {}
+    lastFocusedBeforeModal = null;
+  }
 }
 
 if (photoModalClose) {
@@ -512,6 +536,19 @@ document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape') {
     e.preventDefault();
     closePhotoModal();
+  } else if (e.key === 'Tab') {
+    // Focus-trap: цикл по 3 кнопкам внутри модалки
+    const focusable = [photoModalPrev, photoModalNext, photoModalClose].filter(Boolean);
+    if (focusable.length === 0) return;
+    const idx = focusable.indexOf(document.activeElement);
+    e.preventDefault();
+    if (e.shiftKey) {
+      const next = idx <= 0 ? focusable[focusable.length - 1] : focusable[idx - 1];
+      next.focus();
+    } else {
+      const next = idx === -1 || idx === focusable.length - 1 ? focusable[0] : focusable[idx + 1];
+      next.focus();
+    }
   } else if (e.key === 'ArrowLeft') {
     e.preventDefault();
     // Бесконечная навигация: всегда можно перейти к предыдущему
