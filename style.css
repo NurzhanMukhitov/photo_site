@@ -263,6 +263,7 @@ body {
 
 /* Мобильные устройства */
 @media (max-width: 600px) {
+  :root { --thumb-h: 375px; }
   .strip-track {
     display: flex;
     align-items: flex-end;
@@ -295,6 +296,7 @@ body {
 }
 
 @media (min-width: 601px) and (max-width: 900px) {
+  :root { --thumb-h: 400px; }
   .strip-track { display: flex; align-items: flex-end; gap: 8px; margin: 0 auto; width: 100vw; height: auto; }
   .strip-track img {
     width: 22vw;
@@ -318,6 +320,7 @@ body {
 /* (удалён дубль iPad Pro landscape: object-fit:cover — задаётся в финальном блоке ниже) */
 
 @media (min-width: 901px) and (max-width: 1100px) {
+  :root { --thumb-h: 340px; }
   .photo-strip {
     padding-bottom: 140px;
   }
@@ -330,6 +333,7 @@ body {
 }
 
 @media (min-width: 1101px) {
+  :root { --thumb-h: 300px; }
   .strip-track img {
     width: 170px;
     height: 240px;
@@ -342,6 +346,7 @@ body {
 
 /* iPad Pro в вертикальном положении (portrait) */
 @media (min-width: 1024px) and (max-width: 1366px) and (orientation: portrait) {
+  :root { --thumb-h: 450px; }
   .photo-strip {
     height: 500px !important; /* Увеличиваем высоту контейнера */
     padding-bottom: 40px !important;
@@ -616,23 +621,7 @@ body {
   .fade-in { opacity: 1 !important; transform: none !important; transition: none !important; }
 }
 
-/* Heights per breakpoints */
-@media (max-width: 600px) {
-  :root { --thumb-h: 375px; }
-}
-@media (min-width: 601px) and (max-width: 900px) {
-  :root { --thumb-h: 400px; }
-}
-@media (min-width: 901px) and (max-width: 1100px) {
-  :root { --thumb-h: 340px; }
-}
-@media (min-width: 1101px) {
-  :root { --thumb-h: 300px; }
-}
-/* iPad Pro */
-@media (min-width: 1024px) and (max-width: 1366px) and (orientation: portrait) {
-  :root { --thumb-h: 450px; }
-}
+/* --thumb-h определяется в layout-блоках выше (см. брейкпоинты в начале файла) */
 /* iPad Pro landscape — единый блок (объединены 4 исторических слоя) */
 @media (min-width: 1024px) and (max-width: 1366px) and (orientation: landscape) {
   :root { --thumb-h: 360px; }
