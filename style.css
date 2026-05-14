@@ -175,41 +175,7 @@ body {
   -webkit-overflow-scrolling: touch;
 }
 
-.strip-track img {
-  width: 156px;   /* 120px * 1.3 = 156px */
-  height: 221px;  /* 170px * 1.3 = 221px */
-  object-fit: contain;
-  aspect-ratio: 12/17;
-  border-radius: 0;
-  box-shadow: none;
-  background: transparent;
-  transition: none;
-  margin: 0;
-}
-
-/* Убираем конфликтующие стили для классов размеров */
-/* .strip-track img.photo-large,
-.strip-track img.photo-medium,
-.strip-track img.photo-small {
-  // удаляем все стили
-} */
-
-.strip-track img.photo-overlap-left,
-.strip-track img.photo-overlap-right {
-  margin: 0;
-}
-
-.strip-group {
-  display: flex;
-  align-items: flex-end;
-  gap: 0;
-  margin-right: 0;
-}
-
-@keyframes scroll-strip {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
-}
+/* Базовые стили .strip-track img см. ниже (объединено с unified thumbnail sizing) */
 
 /* Landscape режим - используем CSS переменные установленные JavaScript */
 @media screen and (orientation: landscape) and (max-height: 500px) {
@@ -669,12 +635,17 @@ body {
   }
 } 
 
-/* === Unified thumbnail sizing (consistent across breakpoints) === */
+/* === Unified .strip-track img (объединённое правило) === */
 .strip-track img {
   height: var(--thumb-h, 240px);
   width: auto;
   aspect-ratio: 2 / 3;
   object-fit: cover;
+  border-radius: 0;
+  box-shadow: none;
+  background: transparent;
+  transition: none;
+  margin: 0;
 }
 
 /* Fade-in для миниатюр (уважаем prefers-reduced-motion) */
