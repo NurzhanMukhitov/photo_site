@@ -315,12 +315,7 @@ body {
   .burger { display: none !important; }
 }
 
-/* iPad Pro: landscape — одинаковая высота превью */
-@media (min-width: 1024px) and (max-width: 1366px) and (orientation: landscape) {
-  .strip-track img {
-    object-fit: cover !important; /* единая высота, кроп */
-  }
-}
+/* (удалён дубль iPad Pro landscape: object-fit:cover — задаётся в финальном блоке ниже) */
 
 @media (min-width: 901px) and (max-width: 1100px) {
   .photo-strip {
@@ -343,36 +338,7 @@ body {
   }
 }
 
-@media (min-width: 1024px) and (max-width: 1366px) and (orientation: landscape) {
-  .photo-strip {
-    position: static !important;
-    width: 100vw !important;
-    margin: 0 auto !important;
-    height: 600px !important;
-    display: block !important;
-    background: transparent !important;
-    padding: 0 !important;
-    border-top: none;
-    box-shadow: none;
-  }
-  .strip-track {
-    display: flex !important;
-    align-items: flex-end !important;
-    justify-content: center !important;
-    width: 100vw !important;
-    height: 100% !important;
-    gap: 8px !important;
-    margin: 0 !important;
-  }
-  .strip-track img {
-    height: 100% !important;
-    width: auto !important;
-    object-fit: contain !important;
-    max-width: 100% !important;
-    aspect-ratio: auto !important;
-    margin: 0 !important;
-  }
-}
+/* (удалён мёртвый iPad Pro landscape блок: position:static, height:600px — перекрывался финальным блоком ниже) */
 
 /* iPad Pro в вертикальном положении (portrait) */
 @media (min-width: 1024px) and (max-width: 1366px) and (orientation: portrait) {
@@ -435,14 +401,7 @@ body {
   }
 }
 
-@media (min-width: 1024px) and (max-width: 1199px) and (orientation: landscape) {
-  .photo-strip {
-    height: 100vh !important;
-  }
-  .strip-track {
-    height: 100vh !important;
-  }
-}
+/* (удалён мёртвый блок 1024-1199 landscape — перекрывался финальным iPad Pro landscape блоком ниже) */
 
 /* Бургер-меню */
 .burger {
@@ -674,44 +633,16 @@ body {
 @media (min-width: 1024px) and (max-width: 1366px) and (orientation: portrait) {
   :root { --thumb-h: 450px; }
 }
+/* iPad Pro landscape — единый блок (объединены 4 исторических слоя) */
 @media (min-width: 1024px) and (max-width: 1366px) and (orientation: landscape) {
   :root { --thumb-h: 360px; }
-  .strip-track img { height: var(--thumb-h) !important; object-fit: cover !important; }
-} 
-
-/* iPad Pro landscape: лента фиксирована снизу, текст виден */
-@media (min-width: 1024px) and (max-width: 1366px) and (orientation: landscape) {
-  .photo-strip {
-    position: fixed !important;
-    left: 0 !important;
-    bottom: 24px !important;
-    width: 100vw !important;
-    height: auto !important;
-    margin: 0 !important;
-    background: transparent !important;
-    padding: 0 16px !important;
-    z-index: 1 !important;
-  }
-  main { padding-bottom: calc(var(--thumb-h, 300px) + 88px) !important; }
-} 
-
-/* iPad Pro landscape: ensure scroll and text visible */
-@media (min-width: 1024px) and (max-width: 1366px) and (orientation: landscape) {
-  html, body { height: auto !important; overflow: auto !important; }
-  .header, .intro { display: block !important; }
-  .photo-strip { bottom: calc(env(safe-area-inset-bottom) + 24px) !important; }
-  main { padding-bottom: calc(var(--thumb-h, 300px) + env(safe-area-inset-bottom) + 96px) !important; }
-} 
-
-/* iPad Pro landscape — финальные правки: безопасный отступ и снятие конфликтов высоты */
-@media (min-width: 1024px) and (max-width: 1366px) and (orientation: landscape) {
-  html, body { height: auto !important; overflow: auto !important; }
-  .header, .intro { display: block !important; }
+  html, body { height: auto; overflow: auto; }
+  .header, .intro { display: block !important; } /* перебиваем 'display:none' из max-width:1200 landscape */
 
   .photo-strip {
     position: fixed !important;
     left: 0 !important;
-    top: auto !important; /* сброс возможного top:0 из других правил */
+    top: auto !important;
     bottom: clamp(40px, 5vh, 72px) !important; /* устойчиво на iPad Safari */
     width: 100vw !important;
     height: auto !important;
@@ -721,10 +652,18 @@ body {
     z-index: 1 !important;
   }
 
-  main {
-    padding-bottom: calc(var(--thumb-h, 300px) + clamp(40px, 5vh, 72px)) !important;
+  .strip-track {
+    height: auto !important;
+    align-items: flex-end !important;
   }
 
-  .strip-track { height: auto !important; align-items: flex-end !important; }
-  .strip-track img { height: var(--thumb-h, 300px) !important; width: auto !important; object-fit: cover !important; }
-} 
+  .strip-track img {
+    height: var(--thumb-h) !important;
+    width: auto !important;
+    object-fit: cover !important;
+  }
+
+  main {
+    padding-bottom: calc(var(--thumb-h, 300px) + clamp(40px, 5vh, 72px));
+  }
+}
